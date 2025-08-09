@@ -22,6 +22,7 @@ public class CategoryServiceImpl implements CategoryService{
 
     @Override
     public void deleteCategory(Long id) {
+        //To delete with id we converted the category list to a stream and filtered and if not found we are sending null.
         Category c=categories.stream().filter(c1->c1.getCategoryId().equals(id)).findFirst().orElse(null);
         categories.remove(c);
     }
