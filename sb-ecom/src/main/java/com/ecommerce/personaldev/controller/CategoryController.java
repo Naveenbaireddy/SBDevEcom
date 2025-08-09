@@ -2,10 +2,7 @@ package com.ecommerce.personaldev.controller;
 
 import com.ecommerce.personaldev.model.Category;
 import com.ecommerce.personaldev.service.CategoryService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 import java.util.List;
@@ -29,5 +26,14 @@ public class CategoryController {
     {
         categoryService.createCategory(input);
     }
+
+    //For delete mappings as per the standards we only get the primary key in url with help of path variable.
+    //For deletemappings don't use any request body
+    @DeleteMapping("/api/admin/deletecategory/{id}")
+    public void deletecategory(@PathVariable Long id)
+    {
+        categoryService.deleteCategory(id);
+    }
+
 
 }
