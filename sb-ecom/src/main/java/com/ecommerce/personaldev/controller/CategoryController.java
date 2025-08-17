@@ -2,6 +2,7 @@ package com.ecommerce.personaldev.controller;
 
 import com.ecommerce.personaldev.model.Category;
 import com.ecommerce.personaldev.service.CategoryService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,7 +28,7 @@ public class CategoryController {
     }
 
     @PostMapping("/admin/addcategories")
-    public ResponseEntity<String> addcategory(@RequestBody Category input)
+    public ResponseEntity<String> addcategory(@Valid @RequestBody Category input)
     {
         categoryService.createCategory(input);
         return new ResponseEntity<>("Category added successfully", HttpStatus.OK);
@@ -57,8 +58,7 @@ public class CategoryController {
         }
         catch(ResponseStatusException e){
             return new ResponseEntity<>(UpdatedCategory, e.getStatusCode());
-
-    }
+        }
 
     }
 
