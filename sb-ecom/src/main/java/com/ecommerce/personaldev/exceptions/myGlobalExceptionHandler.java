@@ -13,6 +13,7 @@ import java.util.Map;
 
 @RestControllerAdvice
 public class myGlobalExceptionHandler {
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String,String>> myMethodArgumentNotValidExceptionHandler(MethodArgumentNotValidException e)
     {
@@ -24,6 +25,13 @@ public class myGlobalExceptionHandler {
             response.put(fieldname,message);
         });
         return new ResponseEntity<Map<String,String>>(response, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<String> myResourceNotFoundException(ResourceNotFoundException e)
+    {
+        String message=e.getMessage();
+        return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
     }
 
 }
