@@ -1,6 +1,6 @@
 package com.ecommerce.personaldev.controller;
 
-import com.ecommerce.personaldev.model.Category;
+
 import com.ecommerce.personaldev.payload.CategoryDTO;
 import com.ecommerce.personaldev.payload.CategoryResponse;
 import com.ecommerce.personaldev.service.CategoryService;
@@ -8,7 +8,6 @@ import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 
 import java.util.List;
