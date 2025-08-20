@@ -19,6 +19,6 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long categoryId;
     @NotBlank
-    @Size(min = '5' , message = "Length should be atleast 5")
-    private String CategoryName;
+    @Size(min = 5 , message = "Length should be atleast 5")
+    private String categoryName;
 }
