@@ -8,14 +8,13 @@ import com.ecommerce.personaldev.payload.CategoryResponse;
 import com.ecommerce.personaldev.repositories.CategoryRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class CategoryServiceImpl implements CategoryService{
@@ -27,14 +26,26 @@ public class CategoryServiceImpl implements CategoryService{
     private ModelMapper modelMapper;
 
     @Override
-    public CategoryResponse getallcategories() {
-        List<Category> categories=categoryRepository.findAll();
+    public CategoryResponse getallcategories(Integer pageNumber,Integer pageSize,String sortBy,String sortOrder) {
+        //sortBy is the field on which you want to sort.
+        Sort sortByAndOrder=sortOrder.equalsIgnoreCase("asc")?Sort.by(sortBy).ascending():Sort.by(sortBy).descending();
+
+        //You’re saying: “I only want this slice of data—starting at page pageNumber, with pageSize rows per page.”
+        Pageable pageDetails= PageRequest.of(pageNumber, pageSize,sortByAndOrder);
+        //Instead of fetching all categories from the DB, it fetches only that slice findAll method also accepts Pageable object as parameter.
+        Page<Category> categoryPage=categoryRepository.findAll(pageDetails);
+        List<Category> categories=categoryPage.getContent();
         if(categories.isEmpty()) {
             throw new APIException("No Category exists till now");
         }
         CategoryResponse categoryResponse= new CategoryResponse();
         List<CategoryDTO> categoryDTOS=categories.stream().map(category -> modelMapper.map(category, CategoryDTO.class)).toList();
         categoryResponse.setContent(categoryDTOS);
+        categoryResponse.setPageNumber(categoryPage.getNumber());
+        categoryResponse.setPageSize(categoryPage.getSize());
+        categoryResponse.setTotalElements(categoryPage.getTotalElements());
+        categoryResponse.setTotalPages(categoryPage.getTotalPages());
+        categoryResponse.setLastPage(categoryPage.isLast());
         return categoryResponse;
     }
 
