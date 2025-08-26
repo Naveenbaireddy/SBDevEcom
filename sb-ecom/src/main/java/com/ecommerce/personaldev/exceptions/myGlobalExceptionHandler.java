@@ -1,6 +1,7 @@
 package com.ecommerce.personaldev.exceptions;
 //Any exception will be handled here in entire project.
 
+import com.ecommerce.personaldev.payload.APIResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -28,16 +29,18 @@ public class myGlobalExceptionHandler {
     }
 
     @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<String> myResourceNotFoundException(ResourceNotFoundException e)
+    public ResponseEntity<APIResponse> myResourceNotFoundException(ResourceNotFoundException e)
     {
         String message=e.getMessage();
-        return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
+        APIResponse apiresponse=new APIResponse(message,false);
+        return new ResponseEntity<>(apiresponse, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(APIException.class)
-    public ResponseEntity<String> myResourceNotFoundException(APIException e)
+    public ResponseEntity<APIResponse> myResourceNotFoundException(APIException e)
     {
         String message=e.getMessage();
-        return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+        APIResponse apiresponse=new APIResponse(message,false);
+        return new ResponseEntity<>(apiresponse, HttpStatus.BAD_REQUEST);
     }
 }
